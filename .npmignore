@@ -1,0 +1,11 @@
+### Node ###
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Coverage directory used by tools like istanbul and nyc
+coverage
+
+# nyc test coverage
+.nyc_output
