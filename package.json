@@ -1,6 +1,6 @@
 {
   "name": "backbone.react-bridge",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A toolkit for transforming Marionette views to React components and vice versa.",
   "main": "lib/index.js",
   "repository": {
@@ -18,14 +18,19 @@
   "scripts": {
     "start": "webpack-dev-server --debug --devtool source-map",
     "clean": "rimraf .nyc_output coverage es lib dist report",
-    "pre:build": "npm run clean && mkdirp lib es dist",
-    "build": "npm run pre:build && npm run build:commonjs && npm run build:es && npm run build:umd && npm run build:umd:min",
-    "build:commonjs": "cross-env babel src -o ./lib/backbone.react-bridge.js",
-    "build:es": "cross-env BABEL_ENV=es babel src -o ./es/backbone.react-bridge.js",
-    "build:umd": "cross-env NODE_ENV=development babel src -o ./dist/backbone.react-bridge.js",
-    "build:umd:min": "cross-env NODE_ENV=production babel src -o ./dist/backbone.react-bridge.min.js",
-    "prepublish": "npm run build",
+    "build": "npm run build:commonjs && npm run build:es  && npm run build:umd:min && npm run build:umd",
+    "build:commonjs": "cross-env BABEL_ENV=commonjs babel src --out-dir lib",
+    "build:es": "cross-env BABEL_ENV=es babel src --out-dir es",
+    "build:examples": "cross-env BABEL_ENV=commonjs babel-node examples/buildAll.js",
+    "build:umd": "cross-env BABEL_ENV=commonjs NODE_ENV=development webpack src/index.js dist/backbone.react-bridge.js",
+    "build:umd:min": "cross-env BABEL_ENV=commonjs NODE_ENV=production webpack src/index.js dist/backbone.react-bridge.min.js",
+    "check:src": "npm run lint && npm run test:dry",
+    "clean": "rimraf .nyc_output coverage lib dist report",
     "coverage": "nyc report --reporter=text-lcov",
+    "lint": "npm run lint:src && npm run lint:examples",
+    "lint:src": "eslint --quiet src test build",
+    "lint:examples": "eslint --quiet examples",
+    "prepublish": "npm run clean && npm run check:src && npm run build",
     "test": "nyc ava --no-cache --verbose",
     "test:watch": "npm test -- --watch",
     "test:dry": "ava --no-cache --verbose",
@@ -47,6 +52,28 @@
       "examples"
     ]
   },
+  "babel": {
+    "presets": [
+      "es2015",
+      "react",
+      "stage-1"
+    ],
+    "sourceMaps": "inline"
+  },
+  "npmName": "backbone.react-bridge",
+  "npmFileMap": [
+    {
+      "basePath": "/dist/",
+      "files": [
+        "*.js"
+      ]
+    }
+  ],
+  "browserify": {
+    "transform": [
+      "loose-envify"
+    ]
+  },
   "ava": {
     "files": [
       "__tests__/*.test.js"
@@ -60,31 +87,51 @@
   "devDependencies": {
     "ava": "^0.17.0",
     "ava-spec": "^1.1.0",
-    "babel-cli": "^6.22.2",
-    "babel-core": "^6.9.1",
-    "babel-loader": "^6.2.4",
-    "babel-preset-babili": "0.0.10",
-    "babel-preset-es2015": "^6.9.0",
+    "babel-cli": "^6.6.5",
+    "babel-eslint": "^6.0.4",
+    "babel-loader": "^6.2.0",
+    "babel-plugin-check-es2015-constants": "^6.3.13",
+    "babel-plugin-transform-es2015-arrow-functions": "^6.3.13",
+    "babel-plugin-transform-es2015-block-scoped-functions": "^6.3.13",
+    "babel-plugin-transform-es2015-block-scoping": "^6.3.13",
+    "babel-plugin-transform-es2015-classes": "^6.3.13",
+    "babel-plugin-transform-es2015-computed-properties": "^6.3.13",
+    "babel-plugin-transform-es2015-destructuring": "^6.3.13",
+    "babel-plugin-transform-es2015-for-of": "^6.3.13",
+    "babel-plugin-transform-es2015-function-name": "^6.3.13",
+    "babel-plugin-transform-es2015-literals": "^6.3.13",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.3.13",
+    "babel-plugin-transform-es2015-object-super": "^6.3.13",
+    "babel-plugin-transform-es2015-parameters": "^6.3.13",
+    "babel-plugin-transform-es2015-shorthand-properties": "^6.3.13",
+    "babel-plugin-transform-es2015-spread": "^6.3.13",
+    "babel-plugin-transform-es2015-sticky-regex": "^6.3.13",
+    "babel-plugin-transform-es2015-template-literals": "^6.3.13",
+    "babel-plugin-transform-es2015-unicode-regex": "^6.3.13",
+    "babel-plugin-transform-es3-member-expression-literals": "^6.5.0",
+    "babel-plugin-transform-es3-property-literals": "^6.5.0",
+    "babel-plugin-transform-object-rest-spread": "^6.3.13",
+    "babel-preset-es2015": "^6.6.0",
     "babel-preset-react": "^6.5.0",
-    "babel-register": "^6.22.0",
+    "babel-preset-stage-1": "^6.5.0",
+    "babel-register": "^6.3.13",
     "backbone": "^1.3.3",
     "backbone.marionette": "^2.4.7",
     "browser-env": "^2.0.19",
     "cross-env": "^3.1.4",
-    "es6-template-string-loader": "^1.0.0",
     "eslint": "^2.12.0",
+    "eslint-plugin-babel": "^3.2.0",
     "eslint-plugin-react": "^5.1.1",
     "jquery": "^3.0.0",
-    "mkdirp": "^0.5.1",
     "nyc": "^6.1.1",
     "react": "0.14.0",
     "react-addons-test-utils": "0.14.0",
     "react-dom": "0.14.0",
+    "react-addons-test-utils": "0.14.0",
     "redux": "^3.6.0",
     "redux-test-belt": "^1.0.0",
     "rimraf": "^2.5.4",
     "sinon": "^1.17.7",
-    "underscore": "^1.8.3",
     "webpack": "^1.13.1",
     "webpack-dev-server": "^1.14.1"
   },
