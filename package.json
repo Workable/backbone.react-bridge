@@ -25,7 +25,7 @@
     "build:umd": "cross-env NODE_ENV=development babel src -o ./dist/backbone.react-bridge.js",
     "build:umd:min": "cross-env NODE_ENV=production babel src -o ./dist/backbone.react-bridge.min.js",
     "prepublish": "npm run build",
-    "coverage": "nyc npm test",
+    "coverage": "nyc report --reporter=text-lcov",
     "test": "nyc ava --no-cache --verbose",
     "test:watch": "npm test -- --watch",
     "test:dry": "ava --no-cache --verbose",
