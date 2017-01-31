@@ -5,7 +5,6 @@ import ReactTestUtils from 'react-addons-test-utils';
 import ReactBridge from '../src';
 
 import { describe } from 'ava-spec';
-import {expect} from 'chai';
 
 import Layout from '../examples/templates/marionetteLayout';
 import Component from '../examples/templates/reactComponent';
@@ -22,7 +21,7 @@ describe('viewFromComponent', it => {
     const MarionetteView = ReactBridge.viewFromComponent(Component, reactConfig);
     LayoutView.render().getRegion('component').show(MarionetteView);
 
-    expect(_.isUndefined(LayoutView.component.currentView)).to.be.false;
+    t.false(_.isUndefined(LayoutView.component.currentView));
   });
 
   it('renders the Marionette.View created from the React.Component', t => {
