@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import ReactBridge from '../src';
+import ReactBridge from '../../src';
 
 import Collection from './templates/marionetteCollection';
 import Layout from './templates/marionetteLayout';
 import ReactComponent from './templates/reactComponent';
-import {viewOptions, reactConfig, store} from './helpers';
+import {viewOptions, reactConfig, store} from '../helpers';
 
 
 /*----------  Marionette View From React Component  ----------*/

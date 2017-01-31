@@ -8,7 +8,7 @@ import ReactBridge from '../src';
 import { describe } from 'ava-spec';
 import sinon from 'sinon'
 
-import Collection from '../examples/templates/marionetteCollection';
+import Collection from '../examples/vanilla-example/templates/marionetteCollection';
 import {viewOptions} from '../examples/helpers';
 
 describe('componentFromView', it => {

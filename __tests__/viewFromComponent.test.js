@@ -6,8 +6,8 @@ import ReactBridge from '../src';
 
 import { describe } from 'ava-spec';
 
-import Layout from '../examples/templates/marionetteLayout';
-import Component from '../examples/templates/reactComponent';
+import Layout from '../examples/vanilla-example/templates/marionetteLayout';
+import Component from '../examples/vanilla-example/templates/reactComponent';
 import {reactConfig, MyCollection} from '../examples/helpers';
 
 describe('viewFromComponent', it => {
