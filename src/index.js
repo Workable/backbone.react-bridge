@@ -107,17 +107,17 @@ const ReactBridge = {
           }
         }
 
-        this._reactInternalInstance = ReactDOM.render(<Container/>, this.el);
+        ReactDOM.render(<Container ref={el => (this._reactInternalInstance = el)} />, this.el);
       },
 
       onDestroy() {
-        this._reactInternalInstance._isMounted = false;
         ReactDOM.unmountComponentAtNode(this.el);
+        delete this._reactInternalInstance;
       },
 
       onClose() {
-        this._reactInternalInstance._isMounted = false;
         ReactDOM.unmountComponentAtNode(this.el);
+        delete this._reactInternalInstance;
       }
     });
 
@@ -133,10 +133,12 @@ const ReactBridge = {
    */
 
   componentFromView(MarionetteView, options) {
-    return React.createClass({
+    return class extends React.Component {
 
       componentDidMount() {
-        const parentElem = ReactDOM.findDOMNode(this._reactInternalInstance._instance);
+        const parentElem = this._reactInternalFiber
+          ? this._reactInternalFiber.child.stateNode
+          : ReactDOM.findDOMNode(this._reactInternalInstance._instance);
 
         if (MarionetteView instanceof Marionette.View) {
           MarionetteView.setElement(parentElem);
@@ -149,11 +151,11 @@ const ReactBridge = {
         this._marionetteView.remove = unobtrusiveRemove;
         this.mapEventsToActions(options);
         this._marionetteView.render();
-      },
+      }
 
       shouldComponentUpdate() {
         return false;
-      },
+      }
 
       componentWillUnmount() {
         // Unregister listeners for the user defined marionette events
@@ -163,7 +165,7 @@ const ReactBridge = {
 
         this._marionetteView.destroy && this._marionetteView.destroy();
         this._marionetteView.close && this._marionetteView.close();
-      },
+      }
 
       createTemplate(view, opts) {
         let tagName = view instanceof Marionette.View
@@ -183,7 +185,7 @@ const ReactBridge = {
         }
 
         return React.createElement(tagName, {className}, null);
-      },
+      }
 
       delegate(methodName, ...args) {
         // Check if method exists
@@ -193,7 +195,7 @@ const ReactBridge = {
 
         // Pass the arguments to marionette method
         return this._marionetteView[methodName](...args);
-      },
+      }
 
       mapEventsToActions(opts) {
         if (!opts.eventsToActions || _.isEmpty(opts.eventsToActions)) {
@@ -213,12 +215,12 @@ const ReactBridge = {
         });
 
         return this._marionetteView;
-      },
+      }
 
       render() {
         return this.createTemplate(MarionetteView, options);
       }
-    });
+    }
   }
 };
 

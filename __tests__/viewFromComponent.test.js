@@ -1,7 +1,7 @@
 import _ from 'underscore';
 import Backbone from 'backbone';
 import React from 'react';
-import ReactTestUtils from 'react-addons-test-utils';
+import ReactTestUtils from 'react-dom/test-utils';
 import ReactBridge from '../src';
 
 import { describe } from 'ava-spec';
@@ -144,14 +144,10 @@ describe('viewFromComponent', it => {
     const MarionetteView = ReactBridge.viewFromComponent(Component, reactConfig);
 
     const renderedView = LayoutView.render().getRegion('component').show(MarionetteView);
-    const reactInstance = renderedView.currentView._reactInternalInstance;
+    t.false(typeof renderedView.currentView._reactInternalInstance === 'undefined');
 
     MarionetteView.destroy();
 
-    const reactInstanceDestroyed = reactInstance._isMounted;
-    t.false(reactInstanceDestroyed)
-
-    const marionetteViewDestroyed = MarionetteView.isDestroyed;
-    t.true(marionetteViewDestroyed)
+    t.true(MarionetteView.isDestroyed);
   });
 });

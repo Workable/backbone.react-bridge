@@ -1,7 +1,7 @@
 import _ from 'underscore';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import ReactTestUtils from 'react-addons-test-utils';
+import ReactTestUtils from 'react-dom/test-utils';
 import initStore from 'redux-test-belt';
 import ReactBridge from '../src';
 
