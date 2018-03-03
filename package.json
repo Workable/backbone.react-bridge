@@ -24,11 +24,9 @@
     "build:umd:min": "cross-env BABEL_ENV=rollup NODE_ENV=production rollup -c -o dist/backbone.react-bridge.min.js",
     "build": "npm run clean && npm run build:commonjs && npm run build:es && npm run build:umd && npm run build:umd:min",
     "prepublish": "npm run build",
-    "coverage": "nyc report --reporter=text-lcov",
-    "test": "nyc ava --no-cache --verbose",
-    "test:watch": "npm test -- --watch",
-    "test:dry": "ava --no-cache --verbose",
-    "test:dry:watch": "npm test -- --watch"
+    "coverage": "cross-env BABEL_ENV=test nyc report --reporter=text-lcov",
+    "test": "cross-env BABEL_ENV=test nyc ava --no-cache --verbose",
+    "test:dry": "cross-env BABEL_ENV=test ava --no-cache --verbose"
   },
   "author": "Ioannis Katakis <katakis@workable.com>",
   "contributors": [
@@ -57,8 +55,8 @@
     "babel": "inherit"
   },
   "devDependencies": {
-    "ava": "^0.17.0",
-    "ava-spec": "^1.1.0",
+    "ava": "^0.25.0",
+    "ava-spec": "^1.1.1",
     "babel-cli": "^6.22.2",
     "babel-core": "^6.9.1",
     "babel-plugin-external-helpers": "^6.22.0",
@@ -73,7 +71,7 @@
     "eslint": "^2.12.0",
     "eslint-plugin-react": "^5.1.1",
     "jquery": "^3.0.0",
-    "nyc": "^6.1.1",
+    "nyc": "^11.5.0",
     "react": "16.3.0",
     "react-dom": "16.3.0",
     "redux": "^3.6.0",
