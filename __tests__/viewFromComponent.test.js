@@ -1,4 +1,3 @@
-import _ from 'underscore';
 import Backbone from 'backbone';
 import React from 'react';
 import ReactTestUtils from 'react-dom/test-utils';
@@ -21,7 +20,7 @@ describe('viewFromComponent', it => {
     const MarionetteView = ReactBridge.viewFromComponent(Component, reactConfig);
     LayoutView.render().getRegion('component').show(MarionetteView);
 
-    t.false(_.isUndefined(LayoutView.component.currentView));
+    t.false(typeof LayoutView.component.currentView === 'undefined');
   });
 
   it('renders the Marionette.View created from the React.Component', t => {
@@ -29,7 +28,7 @@ describe('viewFromComponent', it => {
     const MarionetteView = ReactBridge.viewFromComponent(<Component />, reactConfig);
     LayoutView.render().getRegion('component').show(MarionetteView);
 
-    t.false(_.isUndefined(LayoutView.component.currentView));
+    t.false(typeof LayoutView.component.currentView === 'undefined');
   });
 
   it('Marionette.View has a Backbone Model', t => {
@@ -51,7 +50,7 @@ describe('viewFromComponent', it => {
     const collection = reactConfig.collection.toJSON();
     const reactState = MarionetteView._reactInternalInstance.state;
 
-    _.each(_.keys(model), (key) => {
+    Object.keys(model).forEach(key => {
       t.is(reactState[key], model[key]);
     });
 
@@ -59,10 +58,10 @@ describe('viewFromComponent', it => {
   });
 
   it('the default getProps function of the React.Component is overridable', t => {
-    const customReactConfig = _.extend({}, reactConfig);
+    const customReactConfig = Object.assign({}, reactConfig);
     const collection = MyCollection.toJSON();
 
-    customReactConfig.getProps = () => (_.extend({}, {items: collection}));
+    customReactConfig.getProps = () => (Object.assign({}, {items: collection}));
 
     const LayoutView = new Layout({el: '#app'});
     const MarionetteView = ReactBridge.viewFromComponent(Component, customReactConfig);
@@ -74,7 +73,7 @@ describe('viewFromComponent', it => {
 
 
   it('the React.Component may has props which override the default Marionette.View Model', t => {
-    const customReactConfig = _.extend({}, reactConfig);
+    const customReactConfig = Object.assign({}, reactConfig);
     customReactConfig.props = {
       title : 'I am a React Component inside a Marionette View'
     };

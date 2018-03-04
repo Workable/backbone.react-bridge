@@ -1,4 +1,3 @@
-import _ from 'underscore';
 import Marionette from 'backbone.marionette';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -6,21 +5,30 @@ import ReactDOM from 'react-dom';
 const defaultModelEvents = 'change';
 const defaultCollectionEvents = 'add remove reset';
 
-function defaultGetProps({model, collection, state= {}} = {}) {
+function defaultGetProps({model, collection, state = {}} = {}) {
   if (model) {
-    _.extend(state, model.toJSON());
+    Object.assign(state, model.toJSON());
   }
 
   if (collection) {
-    _.extend(state, {items: collection.toJSON()});
+    Object.assign(state, {items: collection.toJSON()});
   }
 
   return state;
 }
 
 function extractNewState(options = {}) {
-  const {getProps, props} = options;
-  return _.extend(getProps ? getProps(options) : defaultGetProps(options), props);
+  const {
+    getProps = defaultGetProps,
+    props
+  } = options;
+
+  const newState = {
+    ...getProps(options),
+    ...props
+  };
+
+  return newState;
 }
 
 function viewCallback(...args) {
@@ -59,13 +67,18 @@ const ReactBridge = {
           constructor() {
             super();
             this.state = extractNewState(options);
+            this.updateComponentState = this.updateComponentState.bind(this);
           }
 
           componentDidMount() {
-            _.defaults(options, {observe: {}});
+            const {
+              model,
+              collections,
+              observe = {}
+            } = options;
 
-            this.initListener(options.model, options.observe.model || defaultModelEvents);
-            this.initListener(options.collections, options.observe.collection || defaultCollectionEvents);
+            this.initListener(model, observe.model || defaultModelEvents);
+            this.initListener(collections, observe.collection || defaultCollectionEvents);
           }
 
           componentWillUnmount() {
@@ -82,7 +95,7 @@ const ReactBridge = {
               events = events.join(' ');
             }
 
-            entity.on(events, this.updateComponentState.bind(this));
+            entity.on(events, this.updateComponentState);
           }
 
           updateComponentState() {
@@ -143,9 +156,12 @@ const ReactBridge = {
         if (MarionetteView instanceof Marionette.View) {
           MarionetteView.setElement(parentElem);
           this._marionetteView = MarionetteView;
-          _.extend(this._marionetteView.options, options);
+          Object.assign(this._marionetteView.options, options);
         } else {
-          this._marionetteView = new MarionetteView(_.extend({el: parentElem}, options));
+          this._marionetteView = new MarionetteView({
+            el: parentElem,
+            ...options
+          });
         }
 
         this._marionetteView.remove = unobtrusiveRemove;
@@ -159,7 +175,7 @@ const ReactBridge = {
 
       componentWillUnmount() {
         // Unregister listeners for the user defined marionette events
-        _.map(options.eventsToActions, (action, event) => {
+        Object.keys(options.eventsToActions).forEach(event => {
           this._marionetteView.stopListening(this._marionetteView, event);
         });
 
@@ -198,16 +214,23 @@ const ReactBridge = {
       }
 
       mapEventsToActions(opts) {
-        if (!opts.eventsToActions || _.isEmpty(opts.eventsToActions)) {
+        const {
+          eventsToActions,
+          dispatch
+        } = opts;
+
+        if (!eventsToActions instanceof Object || !Object.keys(eventsToActions).length) {
           return;
         }
 
-        if (!opts.dispatch || !opts.dispatch instanceof Function) {
+        if (!dispatch || !dispatch instanceof Function) {
           console.error('The `dispatch` function is not defined.');
           return;
         }
 
-        _.map(opts.eventsToActions, (action, event) => {
+        Object.keys(eventsToActions).forEach(event => {
+          const action = eventsToActions[event];
+
           this._marionetteView.listenTo(this._marionetteView, event, (...args) => {
             const myAction = typeof action === 'function' ? action(...args) : action;
             viewCallback.apply(this._marionetteView, [myAction, ...args]);

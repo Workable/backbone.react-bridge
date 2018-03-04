@@ -91,7 +91,6 @@
   "peerDependencies": {
     "backbone.marionette": ">=1.8.8",
     "react": ">=0.14.0",
-    "react-dom": ">=0.14.0",
-    "underscore": ">=1.6.0"
+    "react-dom": ">=0.14.0"
   }
 }

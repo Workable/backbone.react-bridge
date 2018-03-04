@@ -1,4 +1,3 @@
-import _ from 'underscore';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactTestUtils from 'react-dom/test-utils';
@@ -62,7 +61,7 @@ describe('componentFromView', it => {
 
   it('wraps the the React.Component with an element with custom tag', t => {
     let element = null;
-    const customViewOptions = _.extend({}, viewOptions);
+    const customViewOptions = Object.assign({}, viewOptions);
     customViewOptions.tagName = 'div';
 
     const ReactComponent = ReactBridge.componentFromView(Collection, customViewOptions);
@@ -74,7 +73,7 @@ describe('componentFromView', it => {
 
   it('wraps the the React.Component with an element with custom className', t => {
     let element = null;
-    const customViewOptions = _.extend({}, viewOptions);
+    const customViewOptions = Object.assign({}, viewOptions);
     customViewOptions.className = 'myClass';
 
     const ReactComponent = ReactBridge.componentFromView(Collection, customViewOptions);
@@ -99,7 +98,7 @@ describe('componentFromView', it => {
 
   it('throws an error when eventsToActions function exists without defining a dispatch function', t => {
     const spy = sinon.spy(console, 'error');
-    const customViewOptions = _.extend({}, viewOptions);
+    const customViewOptions = Object.assign({}, viewOptions);
     delete customViewOptions.dispatch;
 
     const ReactComponent = ReactBridge.componentFromView(Collection, customViewOptions);
@@ -112,7 +111,7 @@ describe('componentFromView', it => {
   it('dispatches an action when the view triggers an event', t => {
     const mockStore = initStore();
     const store = mockStore({});
-    const customViewOptions = _.extend({}, viewOptions);
+    const customViewOptions = Object.assign({}, viewOptions);
     customViewOptions.dispatch = store.dispatch;
 
     const ReactComponent = ReactBridge.componentFromView(Collection, customViewOptions);
