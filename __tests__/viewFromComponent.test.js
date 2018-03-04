@@ -4,11 +4,11 @@ import React from 'react';
 import ReactTestUtils from 'react-dom/test-utils';
 import ReactBridge from '../src';
 
-import { describe } from 'ava-spec';
+import {describe} from 'ava-spec';
 
-import Layout from '../examples/templates/marionetteLayout';
-import Component from '../examples/templates/reactComponent';
-import {reactConfig, MyCollection} from '../examples/helpers';
+import Layout from '../examples/src/templates/marionetteLayout';
+import Component from '../examples/src/templates/reactComponent';
+import {reactConfig, MyCollection} from '../examples/src/helpers';
 
 describe('viewFromComponent', it => {
 

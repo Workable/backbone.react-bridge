@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import ReactBridge from '../src';
+import ReactBridge from '../../src';
 
 import Collection from './templates/marionetteCollection';
 import Layout from './templates/marionetteLayout';
@@ -42,4 +42,4 @@ const render = () => ReactDOM.render(
 store.subscribe(render);
 render();
 
-viewInstance.delegate('log', 'Delegate functionality is awesome!')
+viewInstance.delegate('log', 'Delegate functionality is awesome!');

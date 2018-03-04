@@ -16,7 +16,7 @@
     "backbone"
   ],
   "scripts": {
-    "start": "webpack-dev-server --debug --devtool source-map",
+    "start": "cross-env BABEL_ENV=rollup NODE_ENV=development rollup -c examples/rollup.config.js -w",
     "clean": "rimraf .nyc_output coverage es lib dist report",
     "build:commonjs": "cross-env BABEL_ENV=commonjs babel src --out-dir lib",
     "build:es": "cross-env BABEL_ENV=es babel src --out-dir es",
@@ -80,7 +80,10 @@
     "rollup": "^0.56.3",
     "rollup-plugin-babel": "^3.0.3",
     "rollup-plugin-commonjs": "^8.3.0",
+    "rollup-plugin-livereload": "^0.6.0",
     "rollup-plugin-node-resolve": "^3.0.3",
+    "rollup-plugin-replace": "^2.0.0",
+    "rollup-plugin-serve": "^0.4.2",
     "rollup-plugin-uglify": "^3.0.0",
     "sinon": "^1.17.7",
     "underscore": "^1.8.3"

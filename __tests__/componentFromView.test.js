@@ -5,11 +5,11 @@ import ReactTestUtils from 'react-dom/test-utils';
 import initStore from 'redux-test-belt';
 import ReactBridge from '../src';
 
-import { describe } from 'ava-spec';
+import {describe} from 'ava-spec';
 import sinon from 'sinon'
 
-import Collection from '../examples/templates/marionetteCollection';
-import {viewOptions} from '../examples/helpers';
+import Collection from '../examples/src/templates/marionetteCollection';
+import {viewOptions} from '../examples/src/helpers';
 
 describe('componentFromView', it => {
 
