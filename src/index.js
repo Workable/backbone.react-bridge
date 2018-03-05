@@ -56,7 +56,25 @@ const ReactBridge = {
   viewFromComponent(Component, options = {}) {
     const ReactMarionetteView = Marionette.View.extend({
 
-      onShow() {
+      initialize() {
+
+        // +-----+--------------------+
+        // | Mn  | Lifecycle Events   |
+        // +-----+--------------------+
+        // | v1  | ['show close']     |
+        // +-----+--------------------+
+        // | v2  | ['show destroy']   |
+        // +-----+--------------------+
+        // | v3  | ['render destroy'] |
+        // +-----+--------------------+
+
+        this.listenTo(this, 'show render', this._onShowRender);
+        this.listenTo(this, 'close destroy', this._onCloseDestroy);
+      },
+
+      template() {},
+
+      _onShowRender() {
         if (this._reactInternalInstance) {
           return false;
         }
@@ -118,20 +136,18 @@ const ReactBridge = {
 
             return <Component {...this.state} />;
           }
+
         }
 
         ReactDOM.render(<Container ref={el => (this._reactInternalInstance = el)} />, this.el);
       },
 
-      onDestroy() {
-        ReactDOM.unmountComponentAtNode(this.el);
-        delete this._reactInternalInstance;
-      },
-
-      onClose() {
+      _onCloseDestroy() {
+        this.stopListening(this, 'show render close destroy');
         ReactDOM.unmountComponentAtNode(this.el);
         delete this._reactInternalInstance;
       }
+
     });
 
     return new ReactMarionetteView(options);
@@ -243,6 +259,7 @@ const ReactBridge = {
       render() {
         return this.createTemplate(MarionetteView, options);
       }
+
     }
   }
 };
