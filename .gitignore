@@ -9,7 +9,6 @@ pids
 *.seed
 
 # Compiled assets
-lib
 es
 dist
 

@@ -1,11 +1,28 @@
 {
+  "plugins": ["transform-object-rest-spread"],
   "presets": [
-    "es2015",
+    [
+      "env", {
+        "modules": false
+      }
+    ],
     "react"
   ],
   "env": {
-   "production": {
-      "presets": ["babili"]
+    "commonjs": {
+      "plugins": [
+        ["transform-es2015-modules-commonjs", { "loose": true }]
+      ]
+    },
+    "test": {
+      "plugins": [
+        ["transform-es2015-modules-commonjs", { "loose": true }]
+      ]
+    },
+    "rollup": {
+      "plugins": [
+        "external-helpers"
+      ]
     }
   }
 }

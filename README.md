@@ -125,7 +125,7 @@ $ npm install --save-dev backbone.react-bridge
 $ npm install
 $ npm start
 ```
-Open a browser and navigate to http://localhost:3333. Enjoy! :blush:
+Enjoy! :blush:
 
 
 ### Build
