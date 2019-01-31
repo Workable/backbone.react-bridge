@@ -54,7 +54,7 @@ $ npm install --save-dev backbone.react-bridge
       // React Component. In case that 'getProps' is undefined, a composition
       // of the model's attributes, the collection's values and the custom
       // properties will be returned to the React Component.
-      // `getProps` receives an object with `model` and `collection` as members.
+      // `getProps` receives an object with `model` and `collection` as properties.
 
       getProps({collection}) {
         return {
