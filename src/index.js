@@ -126,7 +126,7 @@ const ReactBridge = {
               return;
             }
 
-            entity.off();
+            entity.off(null, this.updateComponentState);
           }
 
           render() {
