@@ -56,9 +56,10 @@ $ npm install --save-dev backbone.react-bridge
       // properties will be returned to the React Component.
       // `getProps` receives an object with `model` and `collection` as properties.
 
-      getProps({collection}) {
+      getProps({collection, model}) {
         return {
-          titles: collection.map((m) => {title: m.get('title').toUpperCase()})
+          titles: collection.map((m) => {title: m.get('title').toUpperCase()}),
+          content: model.get('content')
         }
       }
 
